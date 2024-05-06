@@ -7,8 +7,10 @@ import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -19,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCardDelivery {
 
+    public String generateDate(long expectedDate, String pattern) {
+        return LocalDate.now().plusDays(expectedDate).format(DateTimeFormatter.ofPattern(pattern));
+    }
 
     @BeforeAll
     public static void setUp() {
@@ -31,17 +36,12 @@ public class TestCardDelivery {
         // закгрузить страницу
         // поиск элементов
         // взаимодействие с элементами
-        Selenide.open("http://localhost:9999");
+        open("http://localhost:9999");
 
         $("[data-test-id=city] .input__control").setValue("Казань");
-        // Устанавливаем текущую дату
-        LocalDate currentDate = LocalDate.now();
-
-        // Ожидаемая дата для тестирования (текущая дата плюс два дня)
-        LocalDate expectedDate = currentDate.plusDays(2);
-
-        // Проверяем, что текущая дата не равна ожидаемой
-        assertTrue(expectedDate.isAfter(currentDate), "Ожидаемая дата не наступает раньше чем через два дня от текущей даты");
+        String expectedDate = generateDate(3, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
 
         $("[data-test-id=name] .input__control").setValue("Иванов Иван");
         $("[data-test-id=phone] .input__control").setValue("+79094397835");
@@ -50,9 +50,8 @@ public class TestCardDelivery {
                 $(".button__text").shouldBe(visible);
         continueButton.click();
 
-        $("[data-test-id=notification] .notification_theme_alfa-on-white").shouldNotBe(visible);
-        $("[data-test-id=notification] .notification__content").shouldNotBe(Condition.exactText("Встреча успешно забронирована на " + expectedDate));
-        //Selenide.sleep(10000);
+        $(".notification__content")
+                .shouldHave(text("Встреча успешно забронирована на " + expectedDate), Duration.ofSeconds(15));
     }
 
     @Test
@@ -80,14 +79,10 @@ public class TestCardDelivery {
         Selenide.open("http://localhost:9999");
 
         $("[data-test-id=city] .input__control").setValue("Kazan");
-        // Устанавливаем текущую дату
-        LocalDate currentDate = LocalDate.now();
+        String expectedDate = generateDate(3, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
 
-        // Ожидаемая дата для тестирования (текущая дата плюс два дня)
-        LocalDate expectedDate = currentDate.plusDays(2);
-
-        // Проверяем, что текущая дата не равна ожидаемой
-        assertTrue(expectedDate.isAfter(currentDate), "Ожидаемая дата не наступает раньше чем через два дня от текущей даты");
         $("[data-test-id=name] .input__control").setValue("Иванов Иван");
         $("[data-test-id=phone] .input__control").setValue("+79094397835");
         $("[data-test-id=agreement]").click();
@@ -103,14 +98,10 @@ public class TestCardDelivery {
         Selenide.open("http://localhost:9999");
 
         $("[data-test-id=city] .input__control").setValue("Казань");
-        // Устанавливаем текущую дату
-        LocalDate currentDate = LocalDate.now();
+        String expectedDate = generateDate(3, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
 
-        // Ожидаемая дата для тестирования (текущая дата плюс два дня)
-        LocalDate expectedDate = currentDate.plusDays(2);
-
-        // Проверяем, что текущая дата не равна ожидаемой
-        assertTrue(expectedDate.isAfter(currentDate), "Ожидаемая дата не наступает раньше чем через два дня от текущей даты");
         $("[data-test-id=name] .input__control").setValue(" ");
         $("[data-test-id=phone] .input__control").setValue(" ");
         $("[data-test-id=agreement]").click();
@@ -127,14 +118,10 @@ public class TestCardDelivery {
         Selenide.open("http://localhost:9999");
 
         $("[data-test-id=city] .input__control").setValue("Казань");
-        // Устанавливаем текущую дату
-        LocalDate currentDate = LocalDate.now();
+        String expectedDate = generateDate(3, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
 
-        // Ожидаемая дата для тестирования (текущая дата плюс два дня)
-        LocalDate expectedDate = currentDate.plusDays(2);
-
-        // Проверяем, что текущая дата не равна ожидаемой
-        assertTrue(expectedDate.isAfter(currentDate), "Ожидаемая дата не наступает раньше чем через два дня от текущей даты");
         $("[data-test-id=name] .input__control").setValue("Ivan Ivanov");
         $("[data-test-id=phone] .input__control").setValue(" ");
         $("[data-test-id=agreement]").click();
@@ -151,14 +138,10 @@ public class TestCardDelivery {
         Selenide.open("http://localhost:9999");
 
         $("[data-test-id=city] .input__control").setValue("Казань");
-        // Устанавливаем текущую дату
-        LocalDate currentDate = LocalDate.now();
+        String expectedDate = generateDate(3, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
 
-        // Ожидаемая дата для тестирования (текущая дата плюс два дня)
-        LocalDate expectedDate = currentDate.plusDays(2);
-
-        // Проверяем, что текущая дата не равна ожидаемой
-        assertTrue(expectedDate.isAfter(currentDate), "Ожидаемая дата не наступает раньше чем через два дня от текущей даты");
         $("[data-test-id=name] .input__control").setValue("123456");
         $("[data-test-id=phone] .input__control").setValue(" ");
         $("[data-test-id=agreement]").click();
@@ -175,14 +158,10 @@ public class TestCardDelivery {
         Selenide.open("http://localhost:9999");
 
         $("[data-test-id=city] .input__control").setValue("Казань");
-        // Устанавливаем текущую дату
-        LocalDate currentDate = LocalDate.now();
+        String expectedDate = generateDate(3, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
 
-        // Ожидаемая дата для тестирования (текущая дата плюс два дня)
-        LocalDate expectedDate = currentDate.plusDays(2);
-
-        // Проверяем, что текущая дата не равна ожидаемой
-        assertTrue(expectedDate.isAfter(currentDate), "Ожидаемая дата не наступает раньше чем через два дня от текущей даты");
         $("[data-test-id=name] .input__control").setValue("Иван Иванов");
         $("[data-test-id=phone] .input__control").setValue(" ");
         $("[data-test-id=agreement]").click();
@@ -198,14 +177,10 @@ public class TestCardDelivery {
         Selenide.open("http://localhost:9999");
 
         $("[data-test-id=city] .input__control").setValue("Казань");
-        // Устанавливаем текущую дату
-        LocalDate currentDate = LocalDate.now();
+        String expectedDate = generateDate(3, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
 
-        // Ожидаемая дата для тестирования (текущая дата плюс два дня)
-        LocalDate expectedDate = currentDate.plusDays(2);
-
-        // Проверяем, что текущая дата не равна ожидаемой
-        assertTrue(expectedDate.isAfter(currentDate), "Ожидаемая дата не наступает раньше чем через два дня от текущей даты");
         $("[data-test-id=name] .input__control").setValue("Иван Иванов");
         $("[data-test-id=phone] .input__control").setValue("90998765768");
         $("[data-test-id=agreement]").click();
@@ -221,14 +196,10 @@ public class TestCardDelivery {
         Selenide.open("http://localhost:9999");
 
         $("[data-test-id=city] .input__control").setValue("Казань");
-        // Устанавливаем текущую дату
-        LocalDate currentDate = LocalDate.now();
+        String expectedDate = generateDate(3, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
 
-        // Ожидаемая дата для тестирования (текущая дата плюс два дня)
-        LocalDate expectedDate = currentDate.plusDays(2);
-
-        // Проверяем, что текущая дата не равна ожидаемой
-        assertTrue(expectedDate.isAfter(currentDate), "Ожидаемая дата не наступает раньше чем через два дня от текущей даты");
         $("[data-test-id=name] .input__control").setValue("Иван Иванов");
         $("[data-test-id=phone] .input__control").setValue("fffff");
         $("[data-test-id=agreement]").click();
@@ -244,14 +215,10 @@ public class TestCardDelivery {
         Selenide.open("http://localhost:9999");
 
         $("[data-test-id=city] .input__control").setValue("Казань");
-        // Устанавливаем текущую дату
-        LocalDate currentDate = LocalDate.now();
+        String expectedDate = generateDate(3, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
 
-        // Ожидаемая дата для тестирования (текущая дата плюс два дня)
-        LocalDate expectedDate = currentDate.plusDays(2);
-
-        // Проверяем, что текущая дата не равна ожидаемой
-        assertTrue(expectedDate.isAfter(currentDate), "Ожидаемая дата не наступает раньше чем через два дня от текущей даты");
         $("[data-test-id=name] .input__control").setValue("Иван Иванов");
         $("[data-test-id=phone] .input__control").setValue("+8994333999993999");
         $("[data-test-id=agreement]").click();
@@ -268,14 +235,10 @@ public class TestCardDelivery {
         Selenide.open("http://localhost:9999");
 
         $("[data-test-id=city] .input__control").setValue("Казань");
-        // Устанавливаем текущую дату
-        LocalDate currentDate = LocalDate.now();
+        String expectedDate = generateDate(3, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
 
-        // Ожидаемая дата для тестирования (текущая дата плюс два дня)
-        LocalDate expectedDate = currentDate.plusDays(2);
-
-        // Проверяем, что текущая дата не равна ожидаемой
-        assertTrue(expectedDate.isAfter(currentDate), "Ожидаемая дата не наступает раньше чем через два дня от текущей даты");
         $("[data-test-id=name] .input__control").setValue("Иванов Иван");
         $("[data-test-id=phone] .input__control").setValue("+79094397835");
 
@@ -292,18 +255,14 @@ public class TestCardDelivery {
     }
 
     @Test
-    void positiveTesInvalidDate() throws InterruptedException {
+    void negativeTesInvalidDate() throws InterruptedException {
         Selenide.open("http://localhost:9999");
 
         $("[data-test-id=city] .input__control").setValue("Казань");
-        // Устанавливаем текущую дату
-        LocalDate currentDate = LocalDate.now();
+        String expectedDate = generateDate(2, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
 
-        // Ожидаемая дата для тестирования (текущая дата плюс два дня)
-        LocalDate expectedDate = currentDate.plusDays(2);
-
-        // Проверяем, что текущая дата не равна ожидаемой
-        assertTrue(expectedDate.isAfter(currentDate), "Ожидаемая дата не наступает раньше чем через два дня от текущей даты");
         $("[data-test-id=name] .input__control").setValue("Иванов Иван");
         $("[data-test-id=phone] .input__control").setValue("+79094397835");
         $("[data-test-id=agreement]").click();
@@ -311,8 +270,8 @@ public class TestCardDelivery {
                 $(".button__text").shouldBe(visible);
         continueButton.click();
 
-        $("[data-test-id=notification] .notification_theme_alfa-on-white").shouldNotBe(visible);
-        $("[data-test-id=notification] .notification__content").shouldNotBe(Condition.exactText("Встреча успешно забронирована на " + expectedDate));
+        $("[data-test-id='date'] .input__sub").shouldHave(exactText("Заказ на выбранную дату невозможен"));
+
 
     }
 
@@ -327,26 +286,23 @@ public class TestCardDelivery {
 
         $(".icon-button").click();
 
-        LocalDate currentDate = LocalDate.now();
-        int currentMonth = currentDate.getMonthValue();
-        LocalDate futureDate = currentDate.plusWeeks(1);
 
-        // Если будущая дата находится в следующем месяце, переход на следующий месяц
-        while (futureDate.getMonthValue() > currentMonth) {
+        String expectedDate = generateDate(30, "dd.MM.yyyy");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(String.valueOf(expectedDate));
+        $("[data-test-id='date'] input").click();
+
+        if (!generateDate(3, "MM").equals(generateDate(7, "MM"))) {
             $(".calendar__next-arrow").click();
-            currentMonth++;
         }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d");
-        String futureDateStr = formatter.format(futureDate);
-        $(byText(futureDateStr)).click();
 
         $("[data-test-id=name] .input__control").val("Иванов Иван");
         $("[data-test-id=phone] .input__control").val("+79094397835");
         $("[data-test-id=agreement]").click();
         $(".button__text").click();
 
-        $("[data-test-id=notification] .notification_theme_alfa-on-white").shouldNotBe(visible);
-        $("[data-test-id=notification] .notification__content").shouldNotHave(Condition.exactText("Встреча успешно забронирована на " + futureDateStr));
+        $("[data-test-id=notification] .notification__content")
+                .shouldBe(visible, Duration.ofSeconds(15))
+                .shouldHave(Condition.exactText("Встреча успешно забронирована на " + expectedDate));
     }
 }
